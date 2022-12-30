@@ -1,8 +1,9 @@
 # Dependencies required for working with ML samples and notebooks
 torch
+torchvision
 matplotlib
 jupyter
-# Other dependencies required for development 
+# Other dependencies required for development
 black
 flake8
 pytest
