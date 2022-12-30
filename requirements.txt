@@ -1,0 +1,10 @@
+# Dependencies required for working with ML samples and notebooks
+torch
+matplotlib
+jupyter
+# Other dependencies required for development 
+black
+flake8
+pytest
+mypy
+pre-commit
