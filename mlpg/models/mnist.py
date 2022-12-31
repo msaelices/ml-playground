@@ -46,7 +46,7 @@ class MNISTModel(nn.Module):
 
             yield loss, X, y, pred
 
-    def test_gen(self, dataloader: DataLoader, loss_fn: nn.Module) -> tuple[float, int]:
+    def test_gen(self, dataloader: DataLoader, loss_fn: nn.Module) -> tuple[float, float]:
         """Test the model returning a generator with each loss value and the correct predictions"""
         size = len(dataloader.dataset)
         num_batches = len(dataloader)
