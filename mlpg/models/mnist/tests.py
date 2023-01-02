@@ -5,7 +5,7 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 
 
-from ..mnist import MNISTModel, SDGOptimizer
+from model import MNISTModel, SDGOptimizer
 
 
 def test_mnist_training():
