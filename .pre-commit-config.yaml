@@ -12,4 +12,4 @@ repos:
     rev: 3.9.2
     hooks:
     - id: flake8
-      args: [--extend-ignore=E501]
+      args: ['--extend-ignore=E203,E501']
