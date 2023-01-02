@@ -3,6 +3,8 @@ torch
 torchvision
 matplotlib
 jupyter
+opencv-contrib-python
+opencv-python
 # Other dependencies required for development
 black
 flake8
