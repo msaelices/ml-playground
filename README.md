@@ -11,7 +11,7 @@ It is a hands-on repository for self-learning of machine learning algorithms by 
 
 The MNIST database of handwritten digits, available from [this page](http://yann.lecun.com/exdb/mnist/).
 
-You can see the Pytorch model in the [model.py](./mlpg/models/mnist/model.py) module, with an example of usage in the [MNIST notebook](./mlpg/models/mnist/notebook.ipynb).
+You can see the Pytorch model in the [model.py](./mlpg/nnetworks/mnist/model.py) module, with an example of usage in the [MNIST notebook](./mlpg/nnetworks/mnist/notebook.ipynb).
 
 
 ## Running the tests
