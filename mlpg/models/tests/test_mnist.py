@@ -5,7 +5,7 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 
 
-from ..mnist import MNISTModel
+from ..mnist import MNISTModel, SDGOptimizer
 
 
 def test_mnist_training():
@@ -20,7 +20,7 @@ def test_mnist_training():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = MNISTModel().to(device)
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
+    optimizer = SDGOptimizer(model.parameters(), lr=1e-3)
 
     loss, X, y, pred = next(model.train_gen(train_dataloader, loss_fn, optimizer))
 

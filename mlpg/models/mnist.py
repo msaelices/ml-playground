@@ -3,7 +3,27 @@ from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
 
-from typing import Generator
+from typing import Generator, Iterable
+
+
+class SDGOptimizer(Optimizer):
+    """
+    Implements stochastic gradient descent, like torch.optim.SGD but without momentum and weight decay support.
+    Done for educational purposes, just for understanding how SGD optimizers work.
+    """
+
+    def __init__(self, params: Iterable, lr: float):
+        defaults = dict(lr=lr)
+        super().__init__(params, defaults)
+
+    def step(self):
+        """Performs a single optimization step"""
+        with torch.no_grad():
+            for group in self.param_groups:
+                lr = group['lr']
+                for param in group['params']:
+                    if param.grad is not None:
+                        param += param.grad * -lr
 
 
 class MNISTModel(nn.Module):
