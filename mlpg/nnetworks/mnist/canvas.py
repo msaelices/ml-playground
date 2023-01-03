@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import torch
+from matplotlib import pyplot as plt
 
 from model import MNISTModel
 
@@ -33,6 +34,7 @@ class Canvas(np.ndarray):
         cv2.putText(self, text, (OFFSET, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 canvas = Canvas.new()
 start_point = None
 end_point = None
@@ -61,10 +63,18 @@ def on_mouse_events(event, x, y, flags, params):
         start_point = None
 
 
-def main():
-    global is_drawing, canvas
+def get_torch_image():
+    global canvas
+    image = torch.zeros((IMG_SIZE, IMG_SIZE)).to(device).float()
+    for i in range(IMG_SIZE):
+        for j in range(IMG_SIZE):
+            image[i, j] = canvas.image[i * CELL_SIZE, j * CELL_SIZE]
+    return image
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+def main():
+    global is_drawing, device, canvas
+
     model = MNISTModel().to(device)
     model.load_state_dict(torch.load('model.pth'))
 
@@ -79,12 +89,13 @@ def main():
         elif key == ord('c'):
             canvas.image = BLACK
             is_drawing = False
+        elif key == ord('s'):
+            image = get_torch_image()
+            plt.imshow(image.cpu().numpy(), cmap='gray')
+            plt.show()
         elif key == ord('p'):
             is_drawing = False
-            image = torch.zeros((IMG_SIZE, IMG_SIZE)).to(device).float()
-            for i in range(IMG_SIZE):
-                for j in range(IMG_SIZE):
-                    image[i, j] = canvas.image[i * CELL_SIZE, j * CELL_SIZE]
+            image = get_torch_image()
             pred = model(image.view(1, 1, 28, 28))
             canvas.show_text(f'PREDICTION : {pred.argmax(1).item()}')
 
