@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from matplotlib import pyplot as plt
 
-from model import MNISTModel
+from models import MNISTModel
 
 CANVAS_SIZE = 500
 IMG_SIZE = 28

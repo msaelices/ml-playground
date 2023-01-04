@@ -2,6 +2,7 @@ import torch
 from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
+from vit_pytorch import ViT
 
 from typing import Generator, Iterable
 
@@ -81,3 +82,18 @@ class MNISTModel(nn.Module):
         test_loss /= num_batches
         correct /= size
         return test_loss, correct
+
+
+class MNISTViTModel(ViT):
+    def __init__(self):
+        super().__init__(
+            image_size=28,
+            patch_size=7,
+            channels=1,
+            dim=256,
+            mlp_dim=1024,
+            heads=8,
+            num_classes=10,
+            depth=3,
+            dropout=0.2,
+        )
