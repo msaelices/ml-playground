@@ -27,28 +27,10 @@ class SDGOptimizer(Optimizer):
                         param += param.grad * -lr
 
 
-class MNISTModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        # layer to flatten the 28x28 image input into a 784 vector
-        self.flatten = nn.Flatten()
-        self.layers = nn.Sequential(
-            nn.Linear(28 * 28, 512),
-            nn.ReLU(),  # ReLU activation function
-            nn.Linear(512, 512),
-            nn.ReLU(),  # ReLU activation function
-            nn.Linear(512, 10),  # 10 output classes, with the probability of each digit [0-9]
-        )
-
+class BaseModel(nn.Module):
     @property
     def device(self):
         return next(self.parameters()).device
-
-    def forward(self, x):
-        """Forward pass of the model"""
-        x = self.flatten(x)
-        logits = self.layers(x)
-        return logits
 
     def train_gen(self, dataloader: DataLoader, loss_fn: nn.Module, optimizer: Optimizer) -> Generator:
         """Train the model returning a generator with each batch loss, input, output and prediction"""
@@ -80,11 +62,31 @@ class MNISTModel(nn.Module):
                 test_loss += loss_fn(pred, y).item()
                 correct += (pred.argmax(1) == y).type(torch.float).sum().item()
         test_loss /= num_batches
-        correct /= size
-        return test_loss, correct
+        accuracy = correct / size
+        return test_loss, accuracy
 
 
-class MNISTViTModel(ViT):
+class MNISTModel(BaseModel):
+    def __init__(self):
+        super().__init__()
+        # layer to flatten the 28x28 image input into a 784 vector
+        self.flatten = nn.Flatten()
+        self.layers = nn.Sequential(
+            nn.Linear(28 * 28, 512),
+            nn.ReLU(),  # ReLU activation function
+            nn.Linear(512, 512),
+            nn.ReLU(),  # ReLU activation function
+            nn.Linear(512, 10),  # 10 output classes, with the probability of each digit [0-9]
+        )
+
+    def forward(self, x):
+        """Forward pass of the model"""
+        x = self.flatten(x)
+        logits = self.layers(x)
+        return logits
+
+
+class MNISTViTModel(BaseModel, ViT):
     def __init__(self):
         super().__init__(
             image_size=28,
