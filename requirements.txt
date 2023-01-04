@@ -1,6 +1,7 @@
 # Dependencies required for working with ML samples and notebooks
 torch
 torchvision
+vit-pytorch
 matplotlib
 jupyter
 opencv-contrib-python
